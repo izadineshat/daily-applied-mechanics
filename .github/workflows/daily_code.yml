@@ -2,9 +2,8 @@ name: Daily Applied Mechanics Script
 
 on:
   schedule:
-    # اجرا هر روز ساعت ۰۴:۰۰ صبح به وقت UTC (قابل تنظیم)
     - cron: '0 4 * * *'
-  workflow_dispatch: # امکان اجرای دستی با یک دکمه در گیت‌هاب
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -23,11 +22,11 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install google-genai numpy scipy matplotlib
+          pip install openai numpy scipy matplotlib
 
       - name: Run Script Generator
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: |
           python generate_daily_code.py
 
