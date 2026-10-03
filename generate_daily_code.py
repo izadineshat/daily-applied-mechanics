@@ -1,14 +1,18 @@
 import os
 import datetime
-from google import genai
+from openai import OpenAI
 
-# دریافت کلید API از Secrets گیت‌هاب
-api_key = os.environ.get("GEMINI_API_KE")
-client = genai.Client(api_key=api_key)
+# دریافت توکن اوپن‌روتر از Secrets گیت‌هاب
+api_key = os.environ.get("OPENROUTER_API_KEY")
+
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=api_key,
+)
 
 today_str = datetime.datetime.now().strftime("%Y-%m-%d")
 
-prompt = f"""
+prompt = """
 Write a standalone, production-ready, well-documented Python script for Mechanical Engineering (Applied Mechanics / Solid Mechanics / Applied Design).
 Topics include:
 - Finite Element Analysis (1D/2D truss/beam/plate stiffness matrices)
@@ -25,12 +29,18 @@ Requirements:
 4. Output ONLY valid executable Python code without markdown triple-backtick fences or introductory text.
 """
 
-response = client.models.generate_content(
-    model="gemini-2.5-flash",
-    contents=prompt,
+# استفاده از یک مدل رایگان، قدرتمند و فعال در OpenRouter
+response = client.chat.completions.create(
+    model="meta-llama/llama-3.3-70b-instruct:free",
+    messages=[
+        {"role": "system", "content": "You are an expert computational mechanical engineer and Python developer. Return only pure Python code without any explanation."},
+        {"role": "user", "content": prompt}
+    ],
 )
 
-code_content = response.text.strip()
+code_content = response.choices[0].message.content.strip()
+
+# پاک‌سازی تگ‌های احتمالی Markdown
 if code_content.startswith("```python"):
     code_content = code_content.removeprefix("```python").removesuffix("```").strip()
 elif code_content.startswith("```"):
