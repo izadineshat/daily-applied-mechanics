@@ -31,7 +31,7 @@ Requirements:
 
 # استفاده از یک مدل رایگان، قدرتمند و فعال در OpenRouter
 response = client.chat.completions.create(
-    model="meta-llama/llama-3.3-70b-instruct:free",
+    model="openrouter/free",
     messages=[
         {"role": "system", "content": "You are an expert computational mechanical engineer and Python developer. Return only pure Python code without any explanation."},
         {"role": "user", "content": prompt}
