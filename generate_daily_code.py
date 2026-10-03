@@ -2,7 +2,7 @@ import os
 import datetime
 from openai import OpenAI
 
-# دریافت توکن اوپن‌روتر از Secrets گیت‌هاب
+# دریافت توکن OpenRouter از Secrets گیت‌هاب
 api_key = os.environ.get("OPENROUTER_API_KEY")
 
 client = OpenAI(
@@ -29,12 +29,15 @@ Requirements:
 4. Output ONLY valid executable Python code without markdown triple-backtick fences or introductory text.
 """
 
-# استفاده از یک مدل رایگان، قدرتمند و فعال در OpenRouter
+# تنظیم مدل روی روت رایگان اوپن‌روتر
 response = client.chat.completions.create(
     model="openrouter/free",
     messages=[
-        {"role": "system", "content": "You are an expert computational mechanical engineer and Python developer. Return only pure Python code without any explanation."},
-        {"role": "user", "content": prompt}
+        {
+            "role": "system",
+            "content": "You are an expert computational mechanical engineer and Python developer. Return only pure Python code without any explanation.",
+        },
+        {"role": "user", "content": prompt},
     ],
 )
 
